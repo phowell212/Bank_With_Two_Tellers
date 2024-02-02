@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named CPE345_HW2
+# Target rules for targets named Bank_With_Two_Tellers
 
 # Build rule for target.
-CPE345_HW2: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CPE345_HW2
-.PHONY : CPE345_HW2
+Bank_With_Two_Tellers: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Bank_With_Two_Tellers
+.PHONY : Bank_With_Two_Tellers
 
 # fast build rule for target.
-CPE345_HW2/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPE345_HW2.dir/build.make CMakeFiles/CPE345_HW2.dir/build
-.PHONY : CPE345_HW2/fast
+Bank_With_Two_Tellers/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bank_With_Two_Tellers.dir/build.make CMakeFiles/Bank_With_Two_Tellers.dir/build
+.PHONY : Bank_With_Two_Tellers/fast
 
 main.o: main.cpp.o
 .PHONY : main.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPE345_HW2.dir/build.make CMakeFiles/CPE345_HW2.dir/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bank_With_Two_Tellers.dir/build.make CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -142,7 +142,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPE345_HW2.dir/build.make CMakeFiles/CPE345_HW2.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bank_With_Two_Tellers.dir/build.make CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -150,7 +150,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPE345_HW2.dir/build.make CMakeFiles/CPE345_HW2.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bank_With_Two_Tellers.dir/build.make CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -161,7 +161,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... CPE345_HW2"
+	@echo "... Bank_With_Two_Tellers"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

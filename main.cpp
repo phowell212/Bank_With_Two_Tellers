@@ -1,6 +1,8 @@
 #include <iostream>
+#include <iomanip>
 #include <queue>
 #include <vector>
+#include <numeric>
 #include <algorithm>
 
 const int NUM_CUSTOMERS = 100;
@@ -11,6 +13,7 @@ struct Customer {
     int arrivalTime;
     int customerID;
     int waitTime = 0;
+    int orderServed = 0;
     bool processed = false;
 };
 
@@ -39,6 +42,7 @@ int main() {
     Teller tellers[2];
     tellers[0].probabilities = {{2, 0.1}, {3, 0.4}, {4, 0.2}, {5, 0.1}, {6, 0.1}, {7, 0.1}};
     tellers[1].probabilities = {{2, 0.1}, {3, 0.1}, {4, 0.1}, {5, 0.2}, {6, 0.4}, {7, 0.1}};
+    int customersProcessed = 0;
 
     // Init the teller processing time vectors for the histogram later
     vector<int> teller1Times;
@@ -81,9 +85,11 @@ int main() {
                     t.currentCustomer->waitTime++;
                 }
                 if(t.processingTime <= 0) {
-                    t.isAvailable = true;
+                    customersProcessed++;
+                    t.currentCustomer->orderServed = customersProcessed;
                     t.currentCustomer->processed = true;
                     t.currentCustomer = nullptr;
+                    t.isAvailable = true;
                 }
             }
 
@@ -111,17 +117,35 @@ int main() {
         minute++;
     }
 
+    // Sort the customers by ID
+    sort(customers.begin(), customers.end(), [](Customer& a, Customer& b) { return a.customerID < b.customerID; });
+
+    // Print the table header
+    cout << left << setw(15) << "Customer ID" << setw(15) << "Wait Time (m)" << setw(15) << "Order Served" << endl;
+    cout << string(45, '-') << endl; // Print a separator line
+
     // Print the results
     for(auto &c : customers) {
-        cout << "Customer " << c.customerID << " waited " << c.waitTime << " minutes." << endl;
+        cout << left << setw(15) << c.customerID << setw(15) << c.waitTime << setw(15) << c.orderServed << endl;
     }
+    cout << endl;
+
+    // Print the histograms
     cout << "Teller 1 histogram:\n";
+    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
+    cout << string(20, '-') << endl; // Print a separator line
     for(int i = 2; i <= 7; i++) {
-        cout << i << ": " << count(teller1Times.begin(), teller1Times.end(), i) << "\n";
+        cout << left << setw(10) << i << setw(10) << count(teller1Times.begin(), teller1Times.end(), i) << "\n";
     }
-    cout << "Teller 2 histogram:\n";
+
+    cout << "\nTeller 2 histogram:\n";
+    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
+    cout << string(20, '-') << endl; // Print a separator line
     for(int i = 2; i <= 7; i++) {
-        cout << i << ": " << count(teller2Times.begin(), teller2Times.end(), i) << "\n";
+        cout << left << setw(10) << i << setw(10) << count(teller2Times.begin(), teller2Times.end(), i) << "\n";
     }
-    cout << "Total time: " << minute << " minutes." << endl;
+
+    cout << "\nThe Bank took " << minute << " minutes to process all customers.\n";
+    cout << "The average wait time was " << accumulate(customers.begin(), customers.end(), 0, [](int a, Customer& b) { return a + b.waitTime; }) / NUM_CUSTOMERS << " minutes.\n";
+    return 0;
 }
