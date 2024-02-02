@@ -128,24 +128,23 @@ int main() {
     for(auto &c : customers) {
         cout << left << setw(15) << c.customerID << setw(15) << c.waitTime << setw(15) << c.orderServed << endl;
     }
-    cout << endl;
 
     // Print the histograms
-    cout << "Teller 1 histogram:\n";
+    cout << endl << "Teller 1 histogram:" << endl;
     cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
     cout << string(20, '-') << endl; // Print a separator line
     for(int i = 2; i <= 7; i++) {
-        cout << left << setw(10) << i << setw(10) << count(teller1Times.begin(), teller1Times.end(), i) << "\n";
+        cout << left << setw(10) << i << setw(10) << count(teller1Times.begin(), teller1Times.end(), i) << endl;
     }
 
-    cout << "\nTeller 2 histogram:\n";
+    cout << endl << "Teller 2 histogram:"  << endl;
     cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
     cout << string(20, '-') << endl; // Print a separator line
     for(int i = 2; i <= 7; i++) {
-        cout << left << setw(10) << i << setw(10) << count(teller2Times.begin(), teller2Times.end(), i) << "\n";
+        cout << left << setw(10) << i << setw(10) << count(teller2Times.begin(), teller2Times.end(), i) << endl;
     }
 
-    cout << "\nThe Bank took " << minute << " minutes to process all customers.\n";
-    cout << "The average wait time was " << accumulate(customers.begin(), customers.end(), 0, [](int a, Customer& b) { return a + b.waitTime; }) / NUM_CUSTOMERS << " minutes.\n";
+    cout << endl << "The Bank took " << minute << " minutes to process all customers.";
+    cout << endl << "The average wait time was " << accumulate(customers.begin(), customers.end(), 0, [](int a, Customer& b) { return a + b.waitTime; }) / NUM_CUSTOMERS << " minutes.";
     return 0;
 }

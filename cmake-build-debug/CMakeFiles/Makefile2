@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = /mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-buil
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/CPE345_HW2.dir/all
+all: CMakeFiles/Bank_With_Two_Tellers.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/CPE345_HW2.dir/clean
+clean: CMakeFiles/Bank_With_Two_Tellers.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/CPE345_HW2.dir
+# Target rules for target CMakeFiles/Bank_With_Two_Tellers.dir
 
 # All Build rule for target.
-CMakeFiles/CPE345_HW2.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPE345_HW2.dir/build.make CMakeFiles/CPE345_HW2.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPE345_HW2.dir/build.make CMakeFiles/CPE345_HW2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target CPE345_HW2"
-.PHONY : CMakeFiles/CPE345_HW2.dir/all
+CMakeFiles/Bank_With_Two_Tellers.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bank_With_Two_Tellers.dir/build.make CMakeFiles/Bank_With_Two_Tellers.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bank_With_Two_Tellers.dir/build.make CMakeFiles/Bank_With_Two_Tellers.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target Bank_With_Two_Tellers"
+.PHONY : CMakeFiles/Bank_With_Two_Tellers.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/CPE345_HW2.dir/rule: cmake_check_build_system
+CMakeFiles/Bank_With_Two_Tellers.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/CPE345_HW2.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Bank_With_Two_Tellers.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/CPE345_HW2.dir/rule
+.PHONY : CMakeFiles/Bank_With_Two_Tellers.dir/rule
 
 # Convenience name for target.
-CPE345_HW2: CMakeFiles/CPE345_HW2.dir/rule
-.PHONY : CPE345_HW2
+Bank_With_Two_Tellers: CMakeFiles/Bank_With_Two_Tellers.dir/rule
+.PHONY : Bank_With_Two_Tellers
 
 # clean rule for target.
-CMakeFiles/CPE345_HW2.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CPE345_HW2.dir/build.make CMakeFiles/CPE345_HW2.dir/clean
-.PHONY : CMakeFiles/CPE345_HW2.dir/clean
+CMakeFiles/Bank_With_Two_Tellers.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bank_With_Two_Tellers.dir/build.make CMakeFiles/Bank_With_Two_Tellers.dir/clean
+.PHONY : CMakeFiles/Bank_With_Two_Tellers.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
