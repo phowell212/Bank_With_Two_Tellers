@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <queue>
+#include <random>
 #include <vector>
 #include <numeric>
 
@@ -55,7 +56,7 @@ int main() {
     }
 
     // Randomize the array of customers - This doesn't really matter, but it's more realistic
-    random_shuffle(begin(customers), end(customers));
+    shuffle(begin(customers), end(customers), std::mt19937(std::random_device()()));
 
     // Process each customer
     queue<Customer*> waitingCustomers;
