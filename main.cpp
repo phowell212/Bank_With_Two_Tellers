@@ -11,7 +11,7 @@ using namespace std;
 struct Customer {
     int arrivalTime;
     int customerID;
-    int waitTime = 0;
+    int waitTime;
     int orderServed = 0;
     bool processed = false;
 };
@@ -43,9 +43,10 @@ int main() {
     tellers[1].probabilities = {{2, 0.1}, {3, 0.1}, {4, 0.1}, {5, 0.2}, {6, 0.4}, {7, 0.1}};
     int customersProcessed = 0;
 
-    // Init the teller processing time vectors for the histogram later
+    // Init the vectors for the histograms
     vector<int> teller1Times;
     vector<int> teller2Times;
+    vector<int> interArrivalTimes;
 
     // Give each customer an ID and a random arrival time
     for(int i = 0; i < NUM_CUSTOMERS; i++) {
@@ -99,6 +100,11 @@ int main() {
                 auto &nextCustomer = customers[nextCustomerIndex];
                 if (minute - lastCustomerAddedTime >= nextCustomer.arrivalTime && !nextCustomer.processed) {
                     waitingCustomers.push(&nextCustomer);
+
+                    // Add the inter-arrival time to the histogram vector
+                    if (lastCustomerAddedTime != 0) {
+                        interArrivalTimes.push_back(minute - lastCustomerAddedTime);
+                    }
                     lastCustomerAddedTime = minute;
                     nextCustomerIndex++;
                 }
@@ -131,6 +137,13 @@ int main() {
     }
 
     // Print the histograms
+    cout << endl << "Inter-arrival times histogram:" << endl;
+    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
+    cout << string(20, '-') << endl; // Print a separator line
+    for(int i = 1; i <= *max_element(interArrivalTimes.begin(), interArrivalTimes.end()); i++) {
+        cout << left << setw(10) << i << setw(10) << count(interArrivalTimes.begin(), interArrivalTimes.end(), i) << endl;
+    }
+
     cout << endl << "Teller 1 histogram:" << endl;
     cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
     cout << string(20, '-') << endl; // Print a separator line
