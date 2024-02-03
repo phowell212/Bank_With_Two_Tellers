@@ -3,7 +3,6 @@
 #include <queue>
 #include <vector>
 #include <numeric>
-#include <algorithm>
 
 const int NUM_CUSTOMERS = 100;
 
@@ -65,7 +64,7 @@ int main() {
     while(any_of(customers.begin(), customers.end(), [](Customer& c){ return !c.processed; })) {
         for(auto &t : tellers) {
 
-            // Process the current customer
+            // Assign a customer to the teller if they are available
             if(t.isAvailable && !waitingCustomers.empty()) {
                 t.currentCustomer = waitingCustomers.front();
                 waitingCustomers.pop();
@@ -79,6 +78,8 @@ int main() {
                     teller2Times.push_back(t.processingTime);
                 }
 
+
+            // Process the current customer
             } else if (!t.isAvailable) {
                 t.processingTime--;
                 if(t.currentCustomer != nullptr) {
