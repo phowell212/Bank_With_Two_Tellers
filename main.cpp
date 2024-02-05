@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <climits>
 
-const int NUM_CUSTOMERS = 25;
+const int NUM_CUSTOMERS = 100;
 
 using namespace std;
 
@@ -170,8 +170,16 @@ int main() {
 
     // Compute the performance metrics
     cout << endl << "Performance Metrics:" << endl;
+
     cout << "Average customer time in queue: " << accumulate(customers.begin(), customers.end(), 0, [](int a, Customer& b) { return a + b.waitTime; }) / NUM_CUSTOMERS << " minutes." << endl;
-    cout << "Average customer time in the bank: " << accumulate(customers.begin(), customers.end(), 0, [](int a, Customer& b) { return a + b.waitTime; }) / NUM_CUSTOMERS << " minutes." << endl;
+    int totalBankTime = 0;
+    for (const auto& customer : customers) {
+        totalBankTime += customer.waitTime;
+        if (customer.orderServed != 0 && customer.orderServed - 1 < teller1Times.size()) {
+            totalBankTime += teller1Times[customer.orderServed - 1];
+        }
+    }
+    cout << "Average customer time in the bank: " << totalBankTime / NUM_CUSTOMERS << " minutes." << endl;
     cout << "Fraction of Teller 1 active time: " << static_cast<float>(tellers[0].activeTime) / minute << endl;
     cout << "Fraction of Teller 1 idle time: " << static_cast<float>(minute - tellers[0].activeTime) / minute << endl;
     cout << "Fraction of Teller 2 active time: " << static_cast<float>(tellers[1].activeTime) / minute << endl;
