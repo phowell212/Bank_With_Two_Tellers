@@ -4,6 +4,7 @@
 #include <random>
 #include <vector>
 #include <numeric>
+#include <algorithm>
 
 const int NUM_CUSTOMERS = 100;
 
