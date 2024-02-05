@@ -208,6 +208,4 @@ int main() {
     }
 
     cout << endl << "The Bank took " << minute << " minutes to process all customers.";
-    cout << endl << "The average wait time was " << accumulate(customers.begin(), customers.end(), 0, [](int a, Customer& b) { return a + b.waitTime; }) / NUM_CUSTOMERS << " minutes.";
-    return 0;
 }
