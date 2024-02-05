@@ -60,7 +60,7 @@ int main() {
     }
 
     // Randomize the array of customers - This doesn't really matter, but it's more realistic
-    shuffle(begin(customers), end(customers), std::mt19937(std::random_device()()));
+    shuffle(begin(customers), end(customers), mt19937(random_device()()));
 
     // Process each customer
     queue<Customer*> waitingCustomers;
