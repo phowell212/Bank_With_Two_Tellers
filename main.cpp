@@ -5,21 +5,23 @@
 #include <vector>
 #include <numeric>
 #include <algorithm>
+#include <climits>
 
-const int NUM_CUSTOMERS = 100;
+const int NUM_CUSTOMERS = 25;
 
 using namespace std;
 
 struct Customer {
-    int arrivalTime;
-    int customerID;
-    int waitTime;
+    int arrivalTime = 0;
+    int customerID = 0;
+    int waitTime = 0;
     int orderServed = 0;
     bool processed = false;
 };
 
 struct Teller {
     int processingTime = 0;
+    int activeTime = 0;
     bool isAvailable = true;
     vector<pair<int, float>> probabilities;
     Customer* currentCustomer = nullptr;
@@ -35,6 +37,7 @@ int getRandomTime(Teller& teller) {
 }
 
 int main() {
+
     // Seed the random number generator
     srand(time(NULL));
 
@@ -85,6 +88,7 @@ int main() {
             // Process the current customer
             } else if (!t.isAvailable) {
                 t.processingTime--;
+                t.activeTime++;
                 if(t.currentCustomer != nullptr) {
                     t.currentCustomer->waitTime++;
                 }
@@ -126,17 +130,52 @@ int main() {
         minute++;
     }
 
-    // Sort the customers by ID
-    sort(customers.begin(), customers.end(), [](Customer& a, Customer& b) { return a.customerID < b.customerID; });
+    // Sort the customers by their order served
+    sort(customers.begin(), customers.end(), [](Customer& a, Customer& b) { return a.orderServed < b.orderServed; });
 
-    // Print the table header
-    cout << left << setw(15) << "Customer ID" << setw(15) << "Wait Time (m)" << setw(15) << "Order Served" << endl;
-    cout << string(45, '-') << endl; // Print a separator line
+    //Construct the simulation table if the flag is set
+    cout << endl << "Simulation Table:" << endl;
+    cout << left << setw(10) << "Customer" << setw(15) << "Time in Queue" << setw(20) << "Time in Bank" << setw(20) << "Teller 1 Active" << setw(20) << "Teller 1 Idle" << setw(20) << "Teller 2 Active" << setw(20) << "Teller 2 Idle" << endl;
+    cout << string(125, '-') << endl; // Print a separator line
 
-    // Print the results
-    for(auto &c : customers) {
-        cout << left << setw(15) << c.customerID << setw(15) << c.waitTime << setw(15) << c.orderServed << endl;
+    int totalTeller1Active = 0;
+    int totalTeller2Active = 0;
+    int totalTeller1Idle = 0;
+    int totalTeller2Idle = 0;
+
+    for (const auto& customer : customers) {
+        int timeInBank = customer.waitTime;
+        if (customer.orderServed != 0 && customer.orderServed - 1 < teller1Times.size()) {
+            timeInBank += teller1Times[customer.orderServed - 1];
+        }
+
+        int teller1Active = 0;
+        if (customer.orderServed != 0 && customer.orderServed - 1 < teller1Times.size()) {
+            teller1Active = teller1Times[customer.orderServed - 1];
+        }
+        int teller2Active = 0;
+        if (customer.orderServed != 0 && customer.orderServed - 1 < teller2Times.size()) {
+            teller2Active = teller2Times[customer.orderServed - 1];
+        }
+        int teller1Idle = max(0, customer.waitTime - teller1Active);
+        int teller2Idle = max(0, customer.waitTime - teller2Active);
+
+        totalTeller1Active = min(totalTeller1Active + teller1Active, INT_MAX);
+        totalTeller2Active = min(totalTeller2Active + teller2Active, INT_MAX);
+        totalTeller1Idle = min(totalTeller1Idle + teller1Idle, INT_MAX);
+        totalTeller2Idle = min(totalTeller2Idle + teller2Idle, INT_MAX);
+
+        cout << left << setw(10) << customer.customerID << setw(15) << customer.waitTime << setw(20) << timeInBank << setw(20) << teller1Active << setw(20) << teller1Idle << setw(20) << teller2Active << setw(20) << teller2Idle << endl;
     }
+
+    // Compute the performance metrics
+    cout << endl << "Performance Metrics:" << endl;
+    cout << "Average customer time in queue: " << accumulate(customers.begin(), customers.end(), 0, [](int a, Customer& b) { return a + b.waitTime; }) / NUM_CUSTOMERS << " minutes." << endl;
+    cout << "Average customer time in the bank: " << accumulate(customers.begin(), customers.end(), 0, [](int a, Customer& b) { return a + b.waitTime; }) / NUM_CUSTOMERS << " minutes." << endl;
+    cout << "Fraction of Teller 1 active time: " << static_cast<float>(tellers[0].activeTime) / minute << endl;
+    cout << "Fraction of Teller 1 idle time: " << static_cast<float>(minute - tellers[0].activeTime) / minute << endl;
+    cout << "Fraction of Teller 2 active time: " << static_cast<float>(tellers[1].activeTime) / minute << endl;
+    cout << "Fraction of Teller 2 idle time: " << static_cast<float>(minute - tellers[1].activeTime) / minute << endl;
 
     // Print the histograms
     cout << endl << "Inter-arrival times histogram:" << endl;
