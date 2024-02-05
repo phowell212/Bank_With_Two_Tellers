@@ -136,7 +136,7 @@ int main() {
     // Print the simulation table
     cout << endl << "Simulation Table:" << endl;
     cout << left << setw(10) << "Customer" << setw(15) << "Time in Queue" << setw(20) << "Time in Bank" << setw(20) << "Teller 1 Active" << setw(20) << "Teller 1 Idle" << setw(20) << "Teller 2 Active" << setw(20) << "Teller 2 Idle" << endl;
-    cout << string(125, '-') << endl; // Print a separator line
+    cout << string(125, '-') << endl;
 
     int totalTeller1Active = 0;
     int totalTeller2Active = 0;
@@ -145,18 +145,17 @@ int main() {
 
     for (const auto& customer : customers) {
         int timeInBank = customer.waitTime;
-        if (customer.orderServed != 0 && customer.orderServed - 1 < teller1Times.size()) {
-            timeInBank += teller1Times[customer.orderServed - 1];
-        }
 
         int teller1Active = 0;
         if (customer.orderServed != 0 && customer.orderServed - 1 < teller1Times.size()) {
             teller1Active = teller1Times[customer.orderServed - 1];
         }
+
         int teller2Active = 0;
         if (customer.orderServed != 0 && customer.orderServed - 1 < teller2Times.size()) {
             teller2Active = teller2Times[customer.orderServed - 1];
         }
+
         int teller1Idle = max(0, customer.waitTime - teller1Active);
         int teller2Idle = max(0, customer.waitTime - teller2Active);
 
