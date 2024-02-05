@@ -11,10 +11,10 @@
 				<Option working_dir="/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="Bank_With_Two_Tellers">
@@ -24,19 +24,19 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/usr/include/c++/11"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
-					<Add directory="/usr/include/c++/11/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1/x86_64-pc-linux-gnu"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include"/>
 					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 Bank_With_Two_Tellers"/>
-					<CompileFile command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 Bank_With_Two_Tellers"/>
+					<CompileFile command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="Bank_With_Two_Tellers/fast">
@@ -46,39 +46,39 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/usr/include/c++/11"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
-					<Add directory="/usr/include/c++/11/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1/x86_64-pc-linux-gnu"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../include/c++/13.2.1/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include"/>
 					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 Bank_With_Two_Tellers/fast"/>
-					<CompileFile command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 Bank_With_Two_Tellers/fast"/>
+					<CompileFile command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
 				<Option working_dir="/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
 				<Option working_dir="/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j32 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/sbin/make -j20 -f &quot;/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>

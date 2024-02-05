@@ -44,10 +44,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/bin/cmake
+CMAKE_COMMAND = /usr/bin/cmake
 
 # The command to remove a file.
-RM = /usr/local/bin/cmake -E rm -f
+RM = /usr/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -73,15 +73,15 @@ CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.o: CMakeFiles/Bank_With_Two_Teller
 CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.o: /mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/main.cpp
 CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.o: CMakeFiles/Bank_With_Two_Tellers.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.o -MF CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.o.d -o CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.o -c /mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/main.cpp
+	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.o -MF CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.o.d -o CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.o -c /mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/main.cpp
 
 CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/main.cpp > CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.i
+	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/main.cpp > CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.i
 
 CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/main.cpp -o CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.s
+	/usr/sbin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/h/CLionProjects/Bank_With_Two_Tellers/main.cpp -o CMakeFiles/Bank_With_Two_Tellers.dir/main.cpp.s
 
 # Object files for target Bank_With_Two_Tellers
 Bank_With_Two_Tellers_OBJECTS = \
