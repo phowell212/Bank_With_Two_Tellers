@@ -180,21 +180,21 @@ int main() {
     // Print the histograms
     cout << endl << "Inter-arrival times histogram:" << endl;
     cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
-    cout << string(20, '-') << endl; // Print a separator line
+    cout << string(20, '-') << endl;
     for(int i = 1; i <= *max_element(interArrivalTimes.begin(), interArrivalTimes.end()); i++) {
         cout << left << setw(10) << i << setw(10) << count(interArrivalTimes.begin(), interArrivalTimes.end(), i) << endl;
     }
 
     cout << endl << "Teller 1 histogram:" << endl;
     cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
-    cout << string(20, '-') << endl; // Print a separator line
+    cout << string(20, '-') << endl;
     for(int i = 2; i <= 7; i++) {
         cout << left << setw(10) << i << setw(10) << count(teller1Times.begin(), teller1Times.end(), i) << endl;
     }
 
     cout << endl << "Teller 2 histogram:"  << endl;
     cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
-    cout << string(20, '-') << endl; // Print a separator line
+    cout << string(20, '-') << endl;
     for(int i = 2; i <= 7; i++) {
         cout << left << setw(10) << i << setw(10) << count(teller2Times.begin(), teller2Times.end(), i) << endl;
     }
