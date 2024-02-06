@@ -6,17 +6,19 @@
 #include <numeric>
 #include <algorithm>
 
-const int NUM_CUSTOMERS = 100;
+const int NUM_CUSTOMERS = 25;
 const bool SHOW_TABLE = true;
 
 using namespace std;
 
 struct Customer {
-    int arrivalTime = 0;
+    int interArrivalTime = 0;
     int customerID = 0;
     int waitTime = 0;
     int orderServed = 0;
     int timeAtDesk = 0;
+    int minuteArrived = 0;
+    int minuteFinished = 0;
     int teller = 0;
     int tellerPreviousIdleTime = 0;
     bool processed = false;
@@ -60,7 +62,7 @@ int main() {
     // Give each customer an ID and a random arrival time
     for(int i = 0; i < NUM_CUSTOMERS; i++) {
         customers[i].customerID = i;
-        customers[i].arrivalTime = rand() % 4 + 1; // Random time between 1 and 4 minutes
+        customers[i].interArrivalTime = rand() % 4 + 1; // Random time between 1 and 4 minutes
     }
 
     // Randomize the array of customers - This doesn't really matter, but it's more realistic
@@ -69,113 +71,105 @@ int main() {
     // Process each customer
     queue<Customer*> waitingCustomers;
     int minute = 0;
-    int lastCustomerAddedTime = 0;
     int nextCustomerIndex = 0;
-
     while(any_of(customers.begin(), customers.end(), [](Customer& c){ return !c.processed; })) {
 
-        // Assign a customer to teller 0 if they are available
-        if(tellers[0].isAvailable && !waitingCustomers.empty()) {
-            tellers[0].currentCustomer = waitingCustomers.front();
-            tellers[0].currentCustomer->teller = 0;
-            waitingCustomers.pop();
-            tellers[0].processingTime = getRandomTime(tellers[0]);
-
-            // Assign the order served to the customer
-            tellers[0].currentCustomer->orderServed = customersProcessed + 1;
-            customersProcessed++;
-            tellers[0].isAvailable = false;
-
-            // Set the Previous Teller Idle Time
-            if(tellers[0].currentCustomer->orderServed != 1) {
-                tellers[0].currentCustomer->tellerPreviousIdleTime = tellers[0].idleTime;
-                tellers[0].idleTime = 0;
-            }
-
-            // Add the processing time to the histogram vector
-            teller1Times.push_back(tellers[0].processingTime);
+    // Add the next customer to the queue if their arrival time has come
+    if (nextCustomerIndex < customers.size()) {
+        Customer &nextCustomer = customers[nextCustomerIndex];
+        if (minute == nextCustomer.interArrivalTime && !nextCustomer.processed) {
+            waitingCustomers.push(&nextCustomer);
+            nextCustomer.minuteArrived = minute;
+            nextCustomerIndex++; // Increment the index to the next customer
         }
-
-        // If teller 0 is not available, assign a customer to teller 1
-        else if(tellers[1].isAvailable && !waitingCustomers.empty()) {
-            tellers[1].currentCustomer = waitingCustomers.front();
-            tellers[1].currentCustomer->teller = 1;
-            waitingCustomers.pop();
-            tellers[1].processingTime = getRandomTime(tellers[1]);
-
-            // Assign the order served to the customer
-            tellers[1].currentCustomer->orderServed = customersProcessed + 1;
-            customersProcessed++;
-            tellers[1].isAvailable = false;
-
-            // Set the Previous Teller Idle Time
-            if(tellers[1].currentCustomer->orderServed != 1) {
-                tellers[1].currentCustomer->tellerPreviousIdleTime = tellers[1].idleTime;
-                tellers[1].idleTime = 0;
-            }
-
-            // Add the processing time to the histogram vector
-            teller2Times.push_back(tellers[1].processingTime);
-        }
-
-        // Process the current customer
-        for(auto &t : tellers) {
-            if (!t.isAvailable) {
-                t.processingTime--;
-                t.activeTime++;
-                // Increase the wait time of the customer at the desk
-                if(t.currentCustomer != nullptr) {
-                    t.currentCustomer->waitTime++;
-                    t.currentCustomer->timeAtDesk++;
-                }
-                if(t.processingTime <= 0) {
-                    t.currentCustomer->processed = true;
-                    t.currentCustomer = nullptr;
-                    t.isAvailable = true;
-                }
-            } else {
-                t.idleTime++;
-            }
-        }
-
-        // Add customers to the queue if their arrival time has come
-        if (nextCustomerIndex < customers.size()) {
-            auto &nextCustomer = customers[nextCustomerIndex];
-            if (minute - lastCustomerAddedTime >= nextCustomer.arrivalTime && !nextCustomer.processed) {
-                waitingCustomers.push(&nextCustomer);
-
-                // Add the inter-arrival time to the histogram vector
-                if (lastCustomerAddedTime != 0) {
-                    interArrivalTimes.push_back(minute - lastCustomerAddedTime);
-                }
-                lastCustomerAddedTime = minute;
-                nextCustomerIndex++;
-            }
-        }
-
-        // Increase the wait time of all customers in the queue
-        queue<Customer*> tempQueue;
-        while(!waitingCustomers.empty()) {
-            auto c = waitingCustomers.front();
-            c->waitTime++;
-            tempQueue.push(c);
-            waitingCustomers.pop();
-        }
-        waitingCustomers = tempQueue;
-
-        minute++;
-
     }
+
+    // Assign a customer to teller 0 if they are available
+    if(tellers[0].isAvailable && !waitingCustomers.empty()) {
+        tellers[0].currentCustomer = waitingCustomers.front();
+        tellers[0].currentCustomer->teller = 0;
+        waitingCustomers.pop();
+        tellers[0].processingTime = getRandomTime(tellers[0]);
+
+        // Assign the order served to the customer
+        tellers[0].currentCustomer->orderServed = customersProcessed + 1;
+        customersProcessed++;
+        tellers[0].isAvailable = false;
+
+        // Set the Previous Teller Idle Time
+        if(tellers[0].currentCustomer->orderServed != 1) {
+            tellers[0].currentCustomer->tellerPreviousIdleTime = tellers[0].idleTime;
+            tellers[0].idleTime = 0;
+        }
+
+        // Add the processing time to the histogram vector
+        teller1Times.push_back(tellers[0].processingTime);
+    }
+
+    // If teller 0 is not available, assign a customer to teller 1
+    else if(tellers[1].isAvailable && !waitingCustomers.empty()) {
+        tellers[1].currentCustomer = waitingCustomers.front();
+        tellers[1].currentCustomer->teller = 1;
+        waitingCustomers.pop();
+        tellers[1].processingTime = getRandomTime(tellers[1]);
+
+        // Assign the order served to the customer
+        tellers[1].currentCustomer->orderServed = customersProcessed + 1;
+        customersProcessed++;
+        tellers[1].isAvailable = false;
+
+        // Set the Previous Teller Idle Time
+        if(tellers[1].currentCustomer->orderServed != 1) {
+            tellers[1].currentCustomer->tellerPreviousIdleTime = tellers[1].idleTime;
+            tellers[1].idleTime = 0;
+        }
+
+        // Add the processing time to the histogram vector
+        teller2Times.push_back(tellers[1].processingTime);
+    }
+
+    // Process the current customer
+    for(auto &t : tellers) {
+        if (!t.isAvailable) {
+            t.processingTime--;
+            t.activeTime++;
+            // Increase the wait time of the customer at the desk
+            if(t.currentCustomer != nullptr) {
+                t.currentCustomer->waitTime++;
+                t.currentCustomer->timeAtDesk++;
+            }
+            if(t.processingTime <= 0) {
+                t.currentCustomer->processed = true;
+                t.currentCustomer->minuteFinished = minute;
+                t.currentCustomer = nullptr;
+                t.isAvailable = true;
+            }
+        } else {
+            t.idleTime++;
+        }
+    }
+
+    // Increase the wait time of the customers in the queue
+    queue<Customer*> tempQueue;
+    while(!waitingCustomers.empty()) {
+        auto c = waitingCustomers.front();
+        c->waitTime++;
+        tempQueue.push(c);
+        waitingCustomers.pop();
+    }
+    waitingCustomers = tempQueue;
+    minute++;
+}
 
     // Sort the customers by their order served
     sort(customers.begin(), customers.end(), [](Customer& a, Customer& b) { return a.orderServed < b.orderServed; });
 
     // Print the table
     if(SHOW_TABLE) {
-        cout << left << setw(10) << "Customer ID " << setw(15) << "Wait Time " << setw(20) << "Time in Bank " <<
-            setw(20) << "Teller 1 Active " << setw(20) << "Teller 1 Idle " << setw(20) << "Teller 2 Active " <<
-            setw(20) << "Teller 2 Idle " << endl;
-        cout << string(140, '-') << endl;
+        cout << left << setw(20) << "Customer ID" << setw(20) << "Wait Time" << setw(20) << "Time in Bank" <<
+            setw(20) << "Teller 1 Active" << setw(20) << "Teller 1 Idle" << setw(20) << "Teller 2 Active" <<
+            setw(20) << "Teller 2 Idle" << setw(20) << "Minute Arrived" << setw(20) << "Minute Finished" << endl;
+        cout << string(180, '-') << endl;
 
         for (const auto& customer : customers) {
             string teller1Active = "-";
@@ -191,9 +185,10 @@ int main() {
                 teller2Idle = to_string(customer.tellerPreviousIdleTime);
             }
 
-            cout << left << setw(10) << customer.customerID << setw(15) << customer.waitTime << setw(20) <<
+            cout << left << setw(20) << customer.customerID << setw(20) << customer.waitTime << setw(20) <<
                 customer.waitTime + customer.timeAtDesk << setw(20) << teller1Active << setw(20) << teller1Idle <<
-                setw(20) << teller2Active << setw(20) << teller2Idle << endl;
+                setw(20) << teller2Active << setw(20) << teller2Idle << setw(20) << customer.minuteArrived <<
+                setw(20) << customer.minuteFinished << endl;
         }
     }
 
