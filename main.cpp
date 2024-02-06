@@ -6,7 +6,7 @@
 #include <numeric>
 #include <algorithm>
 
-const int NUM_CUSTOMERS = 25;
+const int NUM_CUSTOMERS = 100;
 const bool SHOW_TABLE = true;
 
 using namespace std;
@@ -71,16 +71,15 @@ int main() {
     // Process each customer
     queue<Customer*> waitingCustomers;
     int minute = 0;
-    int nextCustomerIndex = 0;
+
     while(any_of(customers.begin(), customers.end(), [](Customer& c){ return !c.processed; })) {
 
-    // Add the next customer to the queue if their arrival time has come
-    if (nextCustomerIndex < customers.size()) {
-        Customer &nextCustomer = customers[nextCustomerIndex];
-        if (minute == nextCustomer.interArrivalTime && !nextCustomer.processed) {
-            waitingCustomers.push(&nextCustomer);
-            nextCustomer.minuteArrived = minute;
-            nextCustomerIndex++; // Increment the index to the next customer
+    //@TODO - Add the customers to the queue if their arrival time has come instead of processing them all at once
+    // Add customers to the queue if their arrival time has come
+    for (auto &customer : customers) {
+        if (minute == customer.interArrivalTime && !customer.processed) {
+            waitingCustomers.push(&customer);
+            customer.minuteArrived = minute;
         }
     }
 
