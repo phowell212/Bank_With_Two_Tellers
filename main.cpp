@@ -6,7 +6,8 @@
 #include <numeric>
 #include <algorithm>
 
-const int NUM_CUSTOMERS = 25;
+const int NUM_CUSTOMERS = 100;
+const bool SHOW_TABLE = true;
 
 using namespace std;
 
@@ -59,7 +60,7 @@ int main() {
     // Give each customer an ID and a random arrival time
     for(int i = 0; i < NUM_CUSTOMERS; i++) {
         customers[i].customerID = i;
-        customers[i].arrivalTime = int(rand() % 5); // Random time between 1 and 4
+        customers[i].arrivalTime = rand() % 4 + 1; // Random time between 1 and 4 minutes
     }
 
     // Randomize the array of customers - This doesn't really matter, but it's more realistic
@@ -170,23 +171,30 @@ int main() {
     sort(customers.begin(), customers.end(), [](Customer& a, Customer& b) { return a.orderServed < b.orderServed; });
 
     // Print the table
-    cout << left << setw(10) << "Customer ID " << setw(15) << "Wait Time " << setw(20) << "Time in Bank " << setw(20) << "Teller 1 Active " << setw(20) << "Teller 1 Idle " << setw(20) << "Teller 2 Active " << setw(20) << "Teller 2 Idle " << endl;
-    cout << string(140, '-') << endl;
-    for (const auto& customer : customers) {
-        string teller1Active = "-";
-        string teller1Idle = "-";
-        string teller2Active = "-";
-        string teller2Idle = "-";
+    if(SHOW_TABLE) {
+        cout << left << setw(10) << "Customer ID " << setw(15) << "Wait Time " << setw(20) << "Time in Bank " <<
+            setw(20) << "Teller 1 Active " << setw(20) << "Teller 1 Idle " << setw(20) << "Teller 2 Active " <<
+            setw(20) << "Teller 2 Idle " << endl;
+        cout << string(140, '-') << endl;
 
-        if (customer.teller == 0) {
-            teller1Active = to_string(customer.timeAtDesk);
-            teller1Idle = to_string(customer.perviousTellerIdleTime);
-        } else if (customer.teller == 1) {
-            teller2Active = to_string(customer.timeAtDesk);
-            teller2Idle = to_string(customer.perviousTellerIdleTime);
+        for (const auto& customer : customers) {
+            string teller1Active = "-";
+            string teller1Idle = "-";
+            string teller2Active = "-";
+            string teller2Idle = "-";
+
+            if (customer.teller == 0) {
+                teller1Active = to_string(customer.timeAtDesk);
+                teller1Idle = to_string(customer.perviousTellerIdleTime);
+            } else if (customer.teller == 1) {
+                teller2Active = to_string(customer.timeAtDesk);
+                teller2Idle = to_string(customer.perviousTellerIdleTime);
+            }
+
+            cout << left << setw(10) << customer.customerID << setw(15) << customer.waitTime << setw(20) <<
+                customer.waitTime + customer.timeAtDesk << setw(20) << teller1Active << setw(20) << teller1Idle <<
+                setw(20) << teller2Active << setw(20) << teller2Idle << endl;
         }
-
-        cout << left << setw(10) << customer.customerID << setw(15) << customer.waitTime << setw(20) << customer.waitTime + customer.timeAtDesk << setw(20) << teller1Active << setw(20) << teller1Idle << setw(20) << teller2Active << setw(20) << teller2Idle << endl;
     }
 
     // Compute the performance metrics
