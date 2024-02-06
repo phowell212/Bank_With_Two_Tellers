@@ -43,7 +43,6 @@ int getRandomTime(Teller& teller) {
 }
 
 int main() {
-
     // Seed the random number generator
     srand(time(NULL));
 
@@ -53,11 +52,6 @@ int main() {
     tellers[0].probabilities = {{2, 0.1}, {3, 0.4}, {4, 0.2}, {5, 0.1}, {6, 0.1}, {7, 0.1}};
     tellers[1].probabilities = {{2, 0.1}, {3, 0.1}, {4, 0.1}, {5, 0.2}, {6, 0.4}, {7, 0.1}};
     int customersProcessed = 0;
-
-    // Init the vectors for the histograms
-    vector<int> teller1Times;
-    vector<int> teller2Times;
-    vector<int> interArrivalTimes;
 
     // Give each customer an ID and a random arrival time
     for(int i = 0; i < NUM_CUSTOMERS; i++) {
@@ -74,91 +68,67 @@ int main() {
 
     while(any_of(customers.begin(), customers.end(), [](Customer& c){ return !c.processed; })) {
 
-    //@TODO - Add the customers to the queue if their arrival time has come instead of processing them all at once
-    // Add customers to the queue if their arrival time has come
-    for (auto &customer : customers) {
-        if (minute == customer.interArrivalTime && !customer.processed) {
-            waitingCustomers.push(&customer);
-            customer.minuteArrived = minute;
-        }
-    }
 
-    // Assign a customer to teller 0 if they are available
-    if(tellers[0].isAvailable && !waitingCustomers.empty()) {
-        tellers[0].currentCustomer = waitingCustomers.front();
-        tellers[0].currentCustomer->teller = 0;
-        waitingCustomers.pop();
-        tellers[0].processingTime = getRandomTime(tellers[0]);
-
-        // Assign the order served to the customer
-        tellers[0].currentCustomer->orderServed = customersProcessed + 1;
-        customersProcessed++;
-        tellers[0].isAvailable = false;
-
-        // Set the Previous Teller Idle Time
-        if(tellers[0].currentCustomer->orderServed != 1) {
-            tellers[0].currentCustomer->tellerPreviousIdleTime = tellers[0].idleTime;
-            tellers[0].idleTime = 0;
-        }
-
-        // Add the processing time to the histogram vector
-        teller1Times.push_back(tellers[0].processingTime);
-    }
-
-    // If teller 0 is not available, assign a customer to teller 1
-    else if(tellers[1].isAvailable && !waitingCustomers.empty()) {
-        tellers[1].currentCustomer = waitingCustomers.front();
-        tellers[1].currentCustomer->teller = 1;
-        waitingCustomers.pop();
-        tellers[1].processingTime = getRandomTime(tellers[1]);
-
-        // Assign the order served to the customer
-        tellers[1].currentCustomer->orderServed = customersProcessed + 1;
-        customersProcessed++;
-        tellers[1].isAvailable = false;
-
-        // Set the Previous Teller Idle Time
-        if(tellers[1].currentCustomer->orderServed != 1) {
-            tellers[1].currentCustomer->tellerPreviousIdleTime = tellers[1].idleTime;
-            tellers[1].idleTime = 0;
-        }
-
-        // Add the processing time to the histogram vector
-        teller2Times.push_back(tellers[1].processingTime);
-    }
-
-    // Process the current customer
-    for(auto &t : tellers) {
-        if (!t.isAvailable) {
-            t.processingTime--;
-            t.activeTime++;
-            // Increase the wait time of the customer at the desk
-            if(t.currentCustomer != nullptr) {
-                t.currentCustomer->waitTime++;
-                t.currentCustomer->timeAtDesk++;
+        // Add customers to the queue if their arrival time has come
+        //@todo: make this happen only to the "next" customer
+        for (auto &customer : customers) {
+            if (minute == customer.interArrivalTime && !customer.processed) {
+                waitingCustomers.push(&customer);
+                customer.minuteArrived = minute;
             }
-            if(t.processingTime <= 0) {
-                t.currentCustomer->processed = true;
-                t.currentCustomer->minuteFinished = minute;
-                t.currentCustomer = nullptr;
-                t.isAvailable = true;
-            }
-        } else {
-            t.idleTime++;
         }
-    }
 
-    // Increase the wait time of the customers in the queue
-    queue<Customer*> tempQueue;
-    while(!waitingCustomers.empty()) {
-        auto c = waitingCustomers.front();
-        c->waitTime++;
-        tempQueue.push(c);
-        waitingCustomers.pop();
+        // Assign customers to tellers
+        for (int i = 0; i < 2; ++i) {
+            if (tellers[i].isAvailable && !waitingCustomers.empty()) {
+                tellers[i].currentCustomer = waitingCustomers.front();
+                tellers[i].currentCustomer->teller = i;
+                waitingCustomers.pop();
+                tellers[i].processingTime = getRandomTime(tellers[i]);
+
+                tellers[i].currentCustomer->orderServed = customersProcessed + 1;
+                customersProcessed++;
+                tellers[i].isAvailable = false;
+
+                if (tellers[i].currentCustomer->orderServed != 1) {
+                    tellers[i].currentCustomer->tellerPreviousIdleTime = tellers[i].idleTime;
+                    tellers[i].idleTime = 0;
+                }
+            }
+        }
+
+        // Process the current customer
+        for (auto &t : tellers) {
+            if (!t.isAvailable) {
+                t.processingTime--;
+                t.activeTime++;
+                if (t.currentCustomer != nullptr) {
+                    t.currentCustomer->waitTime++;
+                    t.currentCustomer->timeAtDesk++;
+                }
+                if (t.processingTime <= 0) {
+                    t.currentCustomer->processed = true;
+                    t.currentCustomer->minuteFinished = minute;
+                    t.currentCustomer = nullptr;
+                    t.isAvailable = true;
+                }
+            } else {
+                t.idleTime++;
+            }
+        }
+
+        // Increase the wait time of all customers in the queue
+        queue<Customer*> tempQueue;
+        while(!waitingCustomers.empty()) {
+            auto c = waitingCustomers.front();
+            c->waitTime++;
+            tempQueue.push(c);
+            waitingCustomers.pop();
+        }
+        waitingCustomers = tempQueue;
+
+        minute++;
     }
-    waitingCustomers = tempQueue;
-    minute++;
-}
 
     // Sort the customers by their order served
     sort(customers.begin(), customers.end(), [](Customer& a, Customer& b) { return a.orderServed < b.orderServed; });
@@ -171,11 +141,7 @@ int main() {
         cout << string(180, '-') << endl;
 
         for (const auto& customer : customers) {
-            string teller1Active = "-";
-            string teller1Idle = "-";
-            string teller2Active = "-";
-            string teller2Idle = "-";
-
+            string teller1Active = "-", teller1Idle = "-", teller2Active = "-", teller2Idle = "-";
             if (customer.teller == 0) {
                 teller1Active = to_string(customer.timeAtDesk);
                 teller1Idle = to_string(customer.tellerPreviousIdleTime);
@@ -193,43 +159,8 @@ int main() {
 
     // Compute the performance metrics
     cout << endl << "Performance Metrics:" << endl;
-
     cout << "Average customer time in queue: " << accumulate(customers.begin(), customers.end(), 0,
         [](int a, Customer& b) { return a + b.waitTime; }) / NUM_CUSTOMERS << " minutes." << endl;
-    int totalBankTime = 0;
-    for (const auto& customer : customers) {
-        totalBankTime += customer.waitTime;
-        if (customer.orderServed != 0 && customer.orderServed - 1 < teller1Times.size()) {
-            totalBankTime += teller1Times[customer.orderServed - 1];
-        }
-    }
-    cout << "Average customer time in the bank: " << totalBankTime / NUM_CUSTOMERS << " minutes." << endl;
-    cout << "Fraction of Teller 1 active time: " << static_cast<float>(tellers[0].activeTime) / minute << endl;
-    cout << "Fraction of Teller 1 idle time: " << static_cast<float>(minute - tellers[0].activeTime) / minute << endl;
-    cout << "Fraction of Teller 2 active time: " << static_cast<float>(tellers[1].activeTime) / minute << endl;
-    cout << "Fraction of Teller 2 idle time: " << static_cast<float>(minute - tellers[1].activeTime) / minute << endl;
-
-    // Print the histograms
-    cout << endl << "Inter-arrival times histogram:" << endl;
-    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
-    cout << string(20, '-') << endl;
-    for(int i = 1; i <= *max_element(interArrivalTimes.begin(), interArrivalTimes.end()); i++) {
-        cout << left << setw(10) << i << setw(10) << count(interArrivalTimes.begin(), interArrivalTimes.end(), i) << endl;
-    }
-
-    cout << endl << "Teller 0 histogram:" << endl;
-    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
-    cout << string(20, '-') << endl;
-    for(int i = 2; i <= 7; i++) {
-        cout << left << setw(10) << i << setw(10) << count(teller1Times.begin(), teller1Times.end(), i) << endl;
-    }
-
-    cout << endl << "Teller 1 histogram:"  << endl;
-    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
-    cout << string(20, '-') << endl;
-    for(int i = 2; i <= 7; i++) {
-        cout << left << setw(10) << i << setw(10) << count(teller2Times.begin(), teller2Times.end(), i) << endl;
-    }
 
     cout << endl << "The Bank took " << minute << " minutes to process all customers.";
     return 0;
