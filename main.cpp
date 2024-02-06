@@ -6,7 +6,7 @@
 #include <numeric>
 #include <algorithm>
 
-const int NUM_CUSTOMERS = 100;
+const int NUM_CUSTOMERS = 25;
 
 using namespace std;
 
@@ -59,11 +59,11 @@ int main() {
     // Give each customer an ID and a random arrival time
     for(int i = 0; i < NUM_CUSTOMERS; i++) {
         customers[i].customerID = i;
-        customers[i].arrivalTime = int(rand() % 3 + 1); // Random time between 1 and 4
+        customers[i].arrivalTime = int(rand() % 5); // Random time between 1 and 4
     }
 
     // Randomize the array of customers - This doesn't really matter, but it's more realistic
-    // shuffle(begin(customers), end(customers), mt19937(random_device()()));
+    shuffle(begin(customers), end(customers), mt19937(random_device()()));
 
     // Process each customer
     queue<Customer*> waitingCustomers;
