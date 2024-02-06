@@ -238,4 +238,6 @@ int main() {
     }
 
     cout << endl << "The Bank took " << minute << " minutes to process all customers.";
+    return 0;
+
 }
