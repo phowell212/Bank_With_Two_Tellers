@@ -18,7 +18,7 @@ struct Customer {
     int orderServed = 0;
     int timeAtDesk = 0;
     int teller = 0;
-    int perviousTellerIdleTime = 0;
+    int tellerPreviousIdleTime = 0;
     bool processed = false;
 };
 
@@ -88,7 +88,7 @@ int main() {
 
             // Set the Previous Teller Idle Time
             if(tellers[0].currentCustomer->orderServed != 1) {
-                tellers[0].currentCustomer->perviousTellerIdleTime = tellers[0].idleTime;
+                tellers[0].currentCustomer->tellerPreviousIdleTime = tellers[0].idleTime;
                 tellers[0].idleTime = 0;
             }
 
@@ -110,7 +110,7 @@ int main() {
 
             // Set the Previous Teller Idle Time
             if(tellers[1].currentCustomer->orderServed != 1) {
-                tellers[1].currentCustomer->perviousTellerIdleTime = tellers[1].idleTime;
+                tellers[1].currentCustomer->tellerPreviousIdleTime = tellers[1].idleTime;
                 tellers[1].idleTime = 0;
             }
 
@@ -185,10 +185,10 @@ int main() {
 
             if (customer.teller == 0) {
                 teller1Active = to_string(customer.timeAtDesk);
-                teller1Idle = to_string(customer.perviousTellerIdleTime);
+                teller1Idle = to_string(customer.tellerPreviousIdleTime);
             } else if (customer.teller == 1) {
                 teller2Active = to_string(customer.timeAtDesk);
-                teller2Idle = to_string(customer.perviousTellerIdleTime);
+                teller2Idle = to_string(customer.tellerPreviousIdleTime);
             }
 
             cout << left << setw(10) << customer.customerID << setw(15) << customer.waitTime << setw(20) <<
