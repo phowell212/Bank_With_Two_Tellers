@@ -4,9 +4,8 @@
 #include <random>
 #include <vector>
 #include <numeric>
-#include <algorithm>
 
-const int NUM_CUSTOMERS = 100;
+const int NUM_CUSTOMERS = 10;
 const bool SHOW_TABLE = true;
 
 using namespace std;
@@ -65,17 +64,19 @@ int main() {
     // Process each customer
     queue<Customer*> waitingCustomers;
     int minute = 0;
+    int customerIndex = 0;
+    int timeSinceLastCustomerAdded = 0;
 
     while(any_of(customers.begin(), customers.end(), [](Customer& c){ return !c.processed; })) {
 
+        timeSinceLastCustomerAdded++;
 
-        // Add customers to the queue if their arrival time has come
-        //@todo: make this happen only to the "next" customer
-        for (auto &customer : customers) {
-            if (minute == customer.interArrivalTime && !customer.processed) {
-                waitingCustomers.push(&customer);
-                customer.minuteArrived = minute;
-            }
+        // Add a customer to the queue if it's their time
+        if (customerIndex < NUM_CUSTOMERS && customers[customerIndex].interArrivalTime == timeSinceLastCustomerAdded) {
+            customers[customerIndex].minuteArrived = minute;
+            waitingCustomers.push(&customers[customerIndex]);
+            customerIndex++;
+            timeSinceLastCustomerAdded = 0;
         }
 
         // Assign customers to tellers
@@ -135,7 +136,7 @@ int main() {
 
     // Print the table
     if(SHOW_TABLE) {
-        cout << left << setw(20) << "Customer ID" << setw(20) << "Wait Time" << setw(20) << "Time in Bank" <<
+        cout << left << setw(20) << "Customer ID" << setw(20) << "Queue Time" << setw(20) << "Time in Bank" <<
             setw(20) << "Teller 1 Active" << setw(20) << "Teller 1 Idle" << setw(20) << "Teller 2 Active" <<
             setw(20) << "Teller 2 Idle" << setw(20) << "Minute Arrived" << setw(20) << "Minute Finished" << endl;
         cout << string(180, '-') << endl;
