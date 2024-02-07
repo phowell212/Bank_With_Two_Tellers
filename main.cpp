@@ -62,11 +62,6 @@ int main() {
     int customerIndex = 0;
     int timeSinceLastCustomerAdded = 0;
 
-    // Init the vectors for the histograms
-    vector<int> teller1Times;
-    vector<int> teller2Times;
-    vector<int> interArrivalTimes;
-
     // Give each customer an ID and a random arrival time
     for(int i = 0; i < NUM_CUSTOMERS; i++) {
         customers[i].customerID = i;
@@ -90,7 +85,6 @@ int main() {
             waitingCustomers.push(&customers[customerIndex]);
 
             // Add the inter-arrival time to the vector
-            interArrivalTimes.push_back(customers[customerIndex].interArrivalTime);
             customerIndex++;
             timeSinceLastCustomerAdded = 0;
         }
@@ -124,12 +118,6 @@ int main() {
                 if (t.currentCustomer != nullptr) {
                     t.currentCustomer->waitTime++;
                     t.currentCustomer->timeAtDesk++;
-                    // Add the service time to the respective vector
-                    if (t.currentCustomer->teller == 0) {
-                        teller1Times.push_back(t.currentCustomer->timeAtDesk);
-                    } else if (t.currentCustomer->teller == 1) {
-                        teller2Times.push_back(t.currentCustomer->timeAtDesk);
-                    }
                 }
                 if (t.processingTime <= 0) {
                     t.currentCustomer->processed = true;
@@ -211,28 +199,34 @@ int main() {
         cout << "Teller " << i  << " active fraction: " << (float)tellers[i].totalActiveTime / minute << endl;
         cout << "Teller " << i  << " idle fraction: " << (float)tellers[i].totalIdleTime / minute << endl;
     }
+    cout << endl;
 
-    // Print the histograms
-    cout << endl << "Inter-arrival times histogram:" << endl;
-    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
-    cout << string(20, '-') << endl;
-    for(int i = 1; i <= *max_element(interArrivalTimes.begin(), interArrivalTimes.end()); i++) {
-        cout << left << setw(10) << i << setw(10) << count(interArrivalTimes.begin(), interArrivalTimes.end(), i) << endl;
+    // Create the vectors for the histograms
+    vector<int> teller0ServiceTimes;
+    vector<int> teller1ServiceTimes;
+    for (const auto& customer : customers) {
+        if (customer.teller == 0) {
+            teller0ServiceTimes.push_back(customer.timeAtDesk);
+        } else if (customer.teller == 1) {
+            teller1ServiceTimes.push_back(customer.timeAtDesk);
+        }
     }
 
+    // Print the histograms
     cout << endl << "Teller 0 histogram:" << endl;
     cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
     cout << string(20, '-') << endl;
-    for(int i = 2; i <= 7; i++) {
-        cout << left << setw(10) << i << setw(10) << count(teller1Times.begin(), teller1Times.end(), i) << endl;
+    for(int i = 2; i <= *max_element(teller0ServiceTimes.begin(), teller0ServiceTimes.end()); i++) {
+        cout << left << setw(10) << i << setw(10) << count(teller0ServiceTimes.begin(), teller0ServiceTimes.end(), i) << endl;
     }
 
-    cout << endl << "Teller 1 histogram:"  << endl;
+    cout << endl << "Teller 1 histogram:" << endl;
     cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
     cout << string(20, '-') << endl;
-    for(int i = 2; i <= 7; i++) {
-        cout << left << setw(10) << i << setw(10) << count(teller2Times.begin(), teller2Times.end(), i) << endl;
+    for(int i = 2; i <= *max_element(teller1ServiceTimes.begin(), teller1ServiceTimes.end()); i++) {
+        cout << left << setw(10) << i << setw(10) << count(teller1ServiceTimes.begin(), teller1ServiceTimes.end(), i) << endl;
     }
+
 
     cout << endl << "The Bank took " << minute << " minutes to process all customers.";
 
