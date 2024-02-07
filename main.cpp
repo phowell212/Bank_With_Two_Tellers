@@ -27,6 +27,8 @@ struct Teller {
     int processingTime = 0;
     int activeTime = 0;
     int idleTime = 0;
+    int totalActiveTime = 0;
+    int totalIdleTime = 0;
     bool isAvailable = true;
     vector<pair<int, float>> probabilities;
     Customer* currentCustomer = nullptr;
@@ -103,6 +105,7 @@ int main() {
             if (!t.isAvailable) {
                 t.processingTime--;
                 t.activeTime++;
+                t.totalActiveTime++;
                 if (t.currentCustomer != nullptr) {
                     t.currentCustomer->waitTime++;
                     t.currentCustomer->timeAtDesk++;
@@ -115,6 +118,7 @@ int main() {
                 }
             } else {
                 t.idleTime++;
+                t.totalIdleTime++;
             }
         }
 
@@ -159,11 +163,32 @@ int main() {
     }
 
     // Compute the performance metrics
-    cout << endl << "Performance Metrics:" << endl;
+    cout << endl << "Performance Metrics:" << endl << endl;
+
+    // Average customer time in queue
     cout << "Average customer time in queue: " << accumulate(customers.begin(), customers.end(), 0,
-        [](int a, Customer& b) { return a + b.waitTime; }) / NUM_CUSTOMERS << " minutes." << endl;
+                                                                 [](int a, Customer& b) { return a + b.waitTime; }) / NUM_CUSTOMERS << " minutes." << endl;
+
+    // Average customer time in bank
+    cout << "Average customer time in bank: " << accumulate(customers.begin(), customers.end(), 0,
+                                                                [](int a, Customer& b) { return a + b.waitTime + b.timeAtDesk; }) / NUM_CUSTOMERS << " minutes." << endl;
+    cout << endl;
+
+    // Total teller active and idle times
+    for (int i = 0; i < 2; ++i) {
+        cout << "Teller " << i + 1 << " active time: " << tellers[i].totalActiveTime << " minutes." << endl;
+        cout << "Teller " << i + 1 << " idle time: " << tellers[i].totalIdleTime << " minutes." << endl;
+    }
+    cout << endl;
+
+    // Fractions of teller active and idle times
+    for (int i = 0; i < 2; ++i) {
+        cout << "Teller " << i + 1 << " active fraction: " << (float)tellers[i].totalActiveTime / minute << endl;
+        cout << "Teller " << i + 1 << " idle fraction: " << (float)tellers[i].totalIdleTime / minute << endl;
+    }
 
     cout << endl << "The Bank took " << minute << " minutes to process all customers.";
+
     return 0;
 
 }
