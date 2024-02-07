@@ -10,6 +10,10 @@ const bool SHOW_TABLE = true;
 
 using namespace std;
 
+//--------------------------------------------------------------------------------------------
+//*************************************INITIALIZATION****************************************
+//--------------------------------------------------------------------------------------------
+
 struct Customer {
     int interArrivalTime = 0;
     int customerID = 0;
@@ -49,10 +53,14 @@ int main() {
 
     // Init the actors
     vector<Customer> customers(NUM_CUSTOMERS);
+    queue<Customer*> waitingCustomers;
     Teller tellers[2];
     tellers[0].probabilities = {{2, 0.1}, {3, 0.4}, {4, 0.2}, {5, 0.1}, {6, 0.1}, {7, 0.1}};
     tellers[1].probabilities = {{2, 0.1}, {3, 0.1}, {4, 0.1}, {5, 0.2}, {6, 0.4}, {7, 0.1}};
     int customersProcessed = 0;
+    int minute = 0;
+    int customerIndex = 0;
+    int timeSinceLastCustomerAdded = 0;
 
     // Init the vectors for the histograms
     vector<int> teller1Times;
@@ -68,11 +76,9 @@ int main() {
     // Randomize the array of customers - This doesn't really matter, but it's more realistic
     shuffle(begin(customers), end(customers), mt19937(random_device()()));
 
-    // Process each customer
-    queue<Customer*> waitingCustomers;
-    int minute = 0;
-    int customerIndex = 0;
-    int timeSinceLastCustomerAdded = 0;
+//--------------------------------------------------------------------------------------------
+//*************************************SIMULATION*********************************************
+//--------------------------------------------------------------------------------------------
 
     while(any_of(customers.begin(), customers.end(), [](Customer& c){ return !c.processed; })) {
 
@@ -82,6 +88,7 @@ int main() {
         if (customerIndex < NUM_CUSTOMERS && customers[customerIndex].interArrivalTime == timeSinceLastCustomerAdded) {
             customers[customerIndex].minuteArrived = minute;
             waitingCustomers.push(&customers[customerIndex]);
+
             // Add the inter-arrival time to the vector
             interArrivalTimes.push_back(customers[customerIndex].interArrivalTime);
             customerIndex++;
@@ -105,8 +112,6 @@ int main() {
                     tellers[i].currentCustomer->tellerPreviousIdleTime = tellers[i].idleTime;
                     tellers[i].idleTime = 0;
                 }
-
-
             }
         }
 
@@ -138,7 +143,7 @@ int main() {
             }
         }
 
-        // Increase the wait time of all customers in the queue
+        // Increase the wait time of all customers in the queue - setting this directly does not work
         queue<Customer*> tempQueue;
         while(!waitingCustomers.empty()) {
             auto c = waitingCustomers.front();
@@ -150,6 +155,10 @@ int main() {
 
         minute++;
     }
+
+//--------------------------------------------------------------------------------------------
+//*************************************RESULTS***********************************************
+//--------------------------------------------------------------------------------------------
 
     // Sort the customers by their order served
     sort(customers.begin(), customers.end(), [](Customer& a, Customer& b) { return a.orderServed < b.orderServed; });
@@ -181,13 +190,11 @@ int main() {
     // Compute the performance metrics
     cout << endl << "Performance Metrics:" << endl << endl;
 
-    // Average customer time in queue
     cout << "Average customer time in queue: " << accumulate(customers.begin(), customers.end(), 0,
-                                                                 [](int a, Customer& b) { return a + b.waitTime; }) / NUM_CUSTOMERS << " minutes." << endl;
+ [](int a, Customer& b) { return a + b.waitTime; }) / NUM_CUSTOMERS << " minutes." << endl;
 
-    // Average customer time in bank
     cout << "Average customer time in bank: " << accumulate(customers.begin(), customers.end(), 0,
-                                                                [](int a, Customer& b) { return a + b.waitTime + b.timeAtDesk; }) / NUM_CUSTOMERS << " minutes." << endl;
+[](int a, Customer& b) { return a + b.waitTime + b.timeAtDesk; }) / NUM_CUSTOMERS << " minutes." << endl;
     cout << endl;
 
     // Total teller active and idle times
