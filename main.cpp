@@ -5,7 +5,7 @@
 #include <vector>
 #include <numeric>
 
-const int NUM_CUSTOMERS = 10;
+const int NUM_CUSTOMERS = 100;
 const bool SHOW_TABLE = true;
 
 using namespace std;
@@ -54,6 +54,11 @@ int main() {
     tellers[1].probabilities = {{2, 0.1}, {3, 0.1}, {4, 0.1}, {5, 0.2}, {6, 0.4}, {7, 0.1}};
     int customersProcessed = 0;
 
+    // Init the vectors for the histograms
+    vector<int> teller1Times;
+    vector<int> teller2Times;
+    vector<int> interArrivalTimes;
+
     // Give each customer an ID and a random arrival time
     for(int i = 0; i < NUM_CUSTOMERS; i++) {
         customers[i].customerID = i;
@@ -77,6 +82,8 @@ int main() {
         if (customerIndex < NUM_CUSTOMERS && customers[customerIndex].interArrivalTime == timeSinceLastCustomerAdded) {
             customers[customerIndex].minuteArrived = minute;
             waitingCustomers.push(&customers[customerIndex]);
+            // Add the inter-arrival time to the vector
+            interArrivalTimes.push_back(customers[customerIndex].interArrivalTime);
             customerIndex++;
             timeSinceLastCustomerAdded = 0;
         }
@@ -93,10 +100,13 @@ int main() {
                 customersProcessed++;
                 tellers[i].isAvailable = false;
 
+                // Assign the order served to the customer
                 if (tellers[i].currentCustomer->orderServed != 1) {
                     tellers[i].currentCustomer->tellerPreviousIdleTime = tellers[i].idleTime;
                     tellers[i].idleTime = 0;
                 }
+
+
             }
         }
 
@@ -109,6 +119,12 @@ int main() {
                 if (t.currentCustomer != nullptr) {
                     t.currentCustomer->waitTime++;
                     t.currentCustomer->timeAtDesk++;
+                    // Add the service time to the respective vector
+                    if (t.currentCustomer->teller == 0) {
+                        teller1Times.push_back(t.currentCustomer->timeAtDesk);
+                    } else if (t.currentCustomer->teller == 1) {
+                        teller2Times.push_back(t.currentCustomer->timeAtDesk);
+                    }
                 }
                 if (t.processingTime <= 0) {
                     t.currentCustomer->processed = true;
@@ -141,8 +157,8 @@ int main() {
     // Print the table
     if(SHOW_TABLE) {
         cout << left << setw(20) << "Customer ID" << setw(20) << "Queue Time" << setw(20) << "Time in Bank" <<
-            setw(20) << "Teller 1 Active" << setw(20) << "Teller 1 Idle" << setw(20) << "Teller 2 Active" <<
-            setw(20) << "Teller 2 Idle" << setw(20) << "Minute Arrived" << setw(20) << "Minute Finished" << endl;
+            setw(20) << "Teller 0 Active" << setw(20) << "Teller 0 Idle" << setw(20) << "Teller 1 Active" <<
+            setw(20) << "Teller 1 Idle" << setw(20) << "Minute Arrived" << setw(20) << "Minute Finished" << endl;
         cout << string(180, '-') << endl;
 
         for (const auto& customer : customers) {
@@ -176,15 +192,37 @@ int main() {
 
     // Total teller active and idle times
     for (int i = 0; i < 2; ++i) {
-        cout << "Teller " << i + 1 << " active time: " << tellers[i].totalActiveTime << " minutes." << endl;
-        cout << "Teller " << i + 1 << " idle time: " << tellers[i].totalIdleTime << " minutes." << endl;
+        cout << "Teller " << i  << " active time: " << tellers[i].totalActiveTime << " minutes." << endl;
+        cout << "Teller " << i  << " idle time: " << tellers[i].totalIdleTime << " minutes." << endl;
     }
     cout << endl;
 
     // Fractions of teller active and idle times
     for (int i = 0; i < 2; ++i) {
-        cout << "Teller " << i + 1 << " active fraction: " << (float)tellers[i].totalActiveTime / minute << endl;
-        cout << "Teller " << i + 1 << " idle fraction: " << (float)tellers[i].totalIdleTime / minute << endl;
+        cout << "Teller " << i  << " active fraction: " << (float)tellers[i].totalActiveTime / minute << endl;
+        cout << "Teller " << i  << " idle fraction: " << (float)tellers[i].totalIdleTime / minute << endl;
+    }
+
+    // Print the histograms
+    cout << endl << "Inter-arrival times histogram:" << endl;
+    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
+    cout << string(20, '-') << endl;
+    for(int i = 1; i <= *max_element(interArrivalTimes.begin(), interArrivalTimes.end()); i++) {
+        cout << left << setw(10) << i << setw(10) << count(interArrivalTimes.begin(), interArrivalTimes.end(), i) << endl;
+    }
+
+    cout << endl << "Teller 0 histogram:" << endl;
+    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
+    cout << string(20, '-') << endl;
+    for(int i = 2; i <= 7; i++) {
+        cout << left << setw(10) << i << setw(10) << count(teller1Times.begin(), teller1Times.end(), i) << endl;
+    }
+
+    cout << endl << "Teller 1 histogram:"  << endl;
+    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
+    cout << string(20, '-') << endl;
+    for(int i = 2; i <= 7; i++) {
+        cout << left << setw(10) << i << setw(10) << count(teller2Times.begin(), teller2Times.end(), i) << endl;
     }
 
     cout << endl << "The Bank took " << minute << " minutes to process all customers.";
