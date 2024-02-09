@@ -204,6 +204,10 @@ int main() {
     // Create the vectors for the histograms
     vector<int> teller0ServiceTimes;
     vector<int> teller1ServiceTimes;
+    vector<int> interArrivalTimes;
+    vector<int> allTellerServiceTimes;
+
+    // Fill the vectors for the teller histograms
     for (const auto& customer : customers) {
         if (customer.teller == 0) {
             teller0ServiceTimes.push_back(customer.timeAtDesk);
@@ -211,13 +215,17 @@ int main() {
             teller1ServiceTimes.push_back(customer.timeAtDesk);
         }
     }
+    allTellerServiceTimes.insert(allTellerServiceTimes.end(), teller0ServiceTimes.begin(), teller0ServiceTimes.end());
+    allTellerServiceTimes.insert(allTellerServiceTimes.end(), teller1ServiceTimes.begin(), teller1ServiceTimes.end());
 
-    // Print the histograms
-    // Inter-arrival time histogram
-    vector<int> interArrivalTimes;
+    // Fill the vector for the inter-arrival time histogram
+    interArrivalTimes.reserve(customers.size());
     for (const auto& customer : customers) {
         interArrivalTimes.push_back(customer.interArrivalTime);
     }
+
+    // Print the histograms
+    // Inter-arrival time histogram
     cout << endl << "Inter-arrival times histogram:" << endl;
     cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
     cout << string(20, '-') << endl;
@@ -242,9 +250,6 @@ int main() {
     }
 
     // Combined teller histogram
-    vector<int> allTellerServiceTimes;
-    allTellerServiceTimes.insert(allTellerServiceTimes.end(), teller0ServiceTimes.begin(), teller0ServiceTimes.end());
-    allTellerServiceTimes.insert(allTellerServiceTimes.end(), teller1ServiceTimes.begin(), teller1ServiceTimes.end());
     cout << endl << "Combined teller histogram:" << endl;
     cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
     cout << string(20, '-') << endl;
