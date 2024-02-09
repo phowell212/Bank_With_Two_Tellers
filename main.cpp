@@ -213,6 +213,18 @@ int main() {
     }
 
     // Print the histograms
+    // Inter-arrival time histogram
+    vector<int> interArrivalTimes;
+    for (const auto& customer : customers) {
+        interArrivalTimes.push_back(customer.interArrivalTime);
+    }
+    cout << endl << "Inter-arrival times histogram:" << endl;
+    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
+    cout << string(20, '-') << endl;
+    for(int i = 1; i <= *max_element(interArrivalTimes.begin(), interArrivalTimes.end()); i++) {
+        cout << left << setw(10) << i << setw(10) << count(interArrivalTimes.begin(), interArrivalTimes.end(), i) << endl;
+    }
+
     // Teller 0 histogram
     cout << endl << "Teller 0 histogram:" << endl;
     cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
