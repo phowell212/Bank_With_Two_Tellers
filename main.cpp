@@ -213,6 +213,7 @@ int main() {
     }
 
     // Print the histograms
+    // Teller 0 histogram
     cout << endl << "Teller 0 histogram:" << endl;
     cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
     cout << string(20, '-') << endl;
@@ -220,11 +221,23 @@ int main() {
         cout << left << setw(10) << i << setw(10) << count(teller0ServiceTimes.begin(), teller0ServiceTimes.end(), i) << endl;
     }
 
+    // Teller 1 histogram
     cout << endl << "Teller 1 histogram:" << endl;
     cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
     cout << string(20, '-') << endl;
     for(int i = 2; i <= *max_element(teller1ServiceTimes.begin(), teller1ServiceTimes.end()); i++) {
         cout << left << setw(10) << i << setw(10) << count(teller1ServiceTimes.begin(), teller1ServiceTimes.end(), i) << endl;
+    }
+
+    // Combined teller histogram
+    vector<int> allTellerServiceTimes;
+    allTellerServiceTimes.insert(allTellerServiceTimes.end(), teller0ServiceTimes.begin(), teller0ServiceTimes.end());
+    allTellerServiceTimes.insert(allTellerServiceTimes.end(), teller1ServiceTimes.begin(), teller1ServiceTimes.end());
+    cout << endl << "Combined teller histogram:" << endl;
+    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
+    cout << string(20, '-') << endl;
+    for(int i = 2; i <= *max_element(allTellerServiceTimes.begin(), allTellerServiceTimes.end()); i++) {
+        cout << left << setw(10) << i << setw(10) << count(allTellerServiceTimes.begin(), allTellerServiceTimes.end(), i) << endl;
     }
 
 
