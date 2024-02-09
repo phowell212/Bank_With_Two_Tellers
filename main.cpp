@@ -201,13 +201,8 @@ int main() {
     }
     cout << endl;
 
-    // Create the vectors for the histograms
-    vector<int> teller0ServiceTimes;
-    vector<int> teller1ServiceTimes;
-    vector<int> interArrivalTimes;
-    vector<int> allTellerServiceTimes;
-
-    // Fill the vectors for the teller histograms
+    // Create and fill the vectors for the histograms
+    vector<int> teller0ServiceTimes, teller1ServiceTimes, allTellerServiceTimes;
     for (const auto& customer : customers) {
         if (customer.teller == 0) {
             teller0ServiceTimes.push_back(customer.timeAtDesk);
@@ -218,43 +213,70 @@ int main() {
     allTellerServiceTimes.insert(allTellerServiceTimes.end(), teller0ServiceTimes.begin(), teller0ServiceTimes.end());
     allTellerServiceTimes.insert(allTellerServiceTimes.end(), teller1ServiceTimes.begin(), teller1ServiceTimes.end());
 
-    // Fill the vector for the inter-arrival time histogram
-    interArrivalTimes.reserve(customers.size());
+    // Create and fill the vector for the inter-arrival time histogram
+    vector<int> interArrivalTimes(customers.size());
     for (const auto& customer : customers) {
         interArrivalTimes.push_back(customer.interArrivalTime);
     }
 
-    // Print the histograms
-    // Inter-arrival time histogram
-    cout << endl << "Inter-arrival times histogram:" << endl;
-    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
-    cout << string(20, '-') << endl;
-    for(int i = 1; i <= *max_element(interArrivalTimes.begin(), interArrivalTimes.end()); i++) {
-        cout << left << setw(10) << i << setw(10) << count(interArrivalTimes.begin(), interArrivalTimes.end(), i) << endl;
-    }
+    // Store the histogram data
+    vector<string> teller0Histogram, teller1Histogram, combinedHistogram;
+    vector<string> histogramTitles = {"Teller 0 histogram:", "Teller 1 histogram:", "Combined teller histogram:"};
+    vector<string> histogramDashes = {string(20, '-'), string(20, '-'), string(20, '-')};
+    vector<string> histogramLabels = {"Minute    Count", "Minute    Count", "Minute    Count"};
 
-    // Teller 0 histogram
-    cout << endl << "Teller 0 histogram:" << endl;
-    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
-    cout << string(20, '-') << endl;
     for(int i = 2; i <= *max_element(teller0ServiceTimes.begin(), teller0ServiceTimes.end()); i++) {
-        cout << left << setw(10) << i << setw(10) << count(teller0ServiceTimes.begin(), teller0ServiceTimes.end(), i) << endl;
+        stringstream ss;
+        ss << left << setw(10) << i << setw(10) << count(teller0ServiceTimes.begin(), teller0ServiceTimes.end(), i);
+        teller0Histogram.push_back(ss.str());
     }
 
-    // Teller 1 histogram
-    cout << endl << "Teller 1 histogram:" << endl;
-    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
-    cout << string(20, '-') << endl;
     for(int i = 2; i <= *max_element(teller1ServiceTimes.begin(), teller1ServiceTimes.end()); i++) {
-        cout << left << setw(10) << i << setw(10) << count(teller1ServiceTimes.begin(), teller1ServiceTimes.end(), i) << endl;
+        stringstream ss;
+        ss << left << setw(10) << i << setw(10) << count(teller1ServiceTimes.begin(), teller1ServiceTimes.end(), i);
+        teller1Histogram.push_back(ss.str());
     }
 
-    // Combined teller histogram
-    cout << endl << "Combined teller histogram:" << endl;
-    cout << left << setw(10) << "Time" << setw(10) << "Count" << endl;
-    cout << string(20, '-') << endl;
     for(int i = 2; i <= *max_element(allTellerServiceTimes.begin(), allTellerServiceTimes.end()); i++) {
-        cout << left << setw(10) << i << setw(10) << count(allTellerServiceTimes.begin(), allTellerServiceTimes.end(), i) << endl;
+        stringstream ss;
+        ss << left << setw(10) << i << setw(10) << count(allTellerServiceTimes.begin(), allTellerServiceTimes.end(), i);
+        combinedHistogram.push_back(ss.str());
+    }
+
+    // Print the histograms
+    size_t maxRows = max({teller0Histogram.size(), teller1Histogram.size(), combinedHistogram.size()});
+    for (size_t i = 0; i < maxRows; i++) {
+        if (i == 0) {
+            for (const auto& title : histogramTitles) {
+                cout << setw(30) << title;
+            }
+            cout << endl;
+            for (const auto& dash : histogramDashes) {
+                cout << setw(30) << dash;
+            }
+            cout << endl;
+            for (const auto& label : histogramLabels) {
+                cout << setw(30) << label;
+            }
+            cout << endl;
+        }
+
+        if (i < teller0Histogram.size()) {
+            cout << setw(30) << teller0Histogram[i];
+        } else {
+            cout << setw(30) << "";
+        }
+
+        if (i < teller1Histogram.size()) {
+            cout << setw(30) << teller1Histogram[i];
+        } else {
+            cout << setw(30) << "";
+        }
+
+        if (i < combinedHistogram.size()) {
+            cout << setw(30) << combinedHistogram[i];
+        }
+        cout << endl;
     }
 
 
