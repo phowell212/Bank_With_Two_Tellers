@@ -219,6 +219,28 @@ int main() {
         interArrivalTimes.push_back(customer.interArrivalTime);
     }
 
+    // to-Sting the inter-arrival times
+    vector<string> interArrivalHistogram;
+    string interArrivalTitle = "Inter-Arrival Times histogram:";
+    string interArrivalDash = string(20, '-');
+    string interArrivalLabel = "Minute    Count";
+
+    for(int i = 1; i <= *max_element(interArrivalTimes.begin(), interArrivalTimes.end()); i++) {
+        stringstream ss;
+        ss << left << setw(10) << i << setw(10) << count(interArrivalTimes.begin(), interArrivalTimes.end(), i);
+        interArrivalHistogram.push_back(ss.str());
+    }
+
+    // Print the inter-arrival times histogram
+    cout << endl;
+    cout << setw(30) << interArrivalTitle << endl;
+    cout << setw(30) << interArrivalDash << endl;
+    cout << setw(30) << interArrivalLabel << endl;
+    for (const auto& row : interArrivalHistogram) {
+        cout << setw(30) << row << endl;
+    }
+    cout << endl;
+
     // Store the histogram data
     vector<string> teller0Histogram, teller1Histogram, combinedHistogram;
     vector<string> histogramTitles = {"Teller 0 histogram:", "Teller 1 histogram:", "Combined teller histogram:"};
