@@ -221,10 +221,6 @@ int main() {
 
     // to-Sting the inter-arrival times
     vector<string> interArrivalHistogram;
-    string interArrivalTitle = "Inter-Arrival Times histogram:";
-    string interArrivalDash = string(20, '-');
-    string interArrivalLabel = "Minute    Count";
-
     for(int i = 1; i <= *max_element(interArrivalTimes.begin(), interArrivalTimes.end()); i++) {
         stringstream ss;
         ss << left << setw(10) << i << setw(10) << count(interArrivalTimes.begin(), interArrivalTimes.end(), i);
@@ -233,9 +229,9 @@ int main() {
 
     // Print the inter-arrival times histogram
     cout << endl;
-    cout << setw(30) << interArrivalTitle << endl;
-    cout << setw(30) << interArrivalDash << endl;
-    cout << setw(30) << interArrivalLabel << endl;
+    cout << setw(30) << "Inter-Arrival Times histogram:" << endl;
+    cout << setw(30) << string(20, '-') << endl;
+    cout << setw(30) << "Minute    Count" << endl;
     for (const auto& row : interArrivalHistogram) {
         cout << setw(30) << row << endl;
     }
